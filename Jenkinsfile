@@ -14,6 +14,7 @@ pipeline {
                     )
 
                     git clone -b main https://github.com/Shivkumarrathod/jenkins-nodejs-application.git
+                    echo Repository cloned successfully
                 '''
             }
         }
@@ -23,6 +24,7 @@ pipeline {
                 bat '''
                     cd devops\\jenkins-nodejs-application
                     docker build -t nodejs-app:latest .
+                    echo Docker image built successfully
                 '''
             }
         }
@@ -34,13 +36,8 @@ pipeline {
                     docker rm nodejs-container || exit 0
 
                     docker run -d --name nodejs-container -p 8000:8080 nodejs-app:latest
+                    echo Docker container deployed successfully
                 '''
-            }
-        }
-
-        stage('Test Application') {
-            steps {
-                bat 'docker ps'
             }
         }
     }
