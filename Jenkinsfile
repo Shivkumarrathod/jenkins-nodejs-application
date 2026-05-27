@@ -1,44 +1,46 @@
 pipeline {
-    agent {
-        docker {
-            image 'ubuntu:latest'
-            args '-u root'
-        }
-    }
+    agent any
 
     stages {
-        stage('install dependencies') {
+
+        stage('Clone Repository') {
             steps {
-                sh '''
-                    apt update
-                    apt install -y git docker.io
+                bat '''
+                    if not exist devops mkdir devops
+                    cd devops
+
+                    if exist jenkins-nodejs-application (
+                        rmdir /s /q jenkins-nodejs-application
+                    )
+
+                    git clone -b main https://github.com/Shivkumarrathod/jenkins-nodejs-application.git
                 '''
             }
         }
 
-        stage('clone repository'){
-           steps {
-             sh '''
-                mkdir -p devops
-                cd devops
-                rm -rf jenkins-nodejs-application
-                git clone -b main https://github.com/Shivkumarrathod/jenkins-nodejs-application.git
-             '''
-           }
-        }
-        stage('build docker image') {
+        stage('Build Docker Image') {
             steps {
-                sh '''
-                    cd devops/jenkins-nodejs-application
+                bat '''
+                    cd devops\\jenkins-nodejs-application
                     docker build -t nodejs-app:latest .
                 '''
             }
         }
-        stage('deploy'){
+
+        stage('Deploy Container') {
             steps {
-                sh '''
-                    docker run -d -p 8000:8080 nodejs-app
+                bat '''
+                    docker stop nodejs-container || exit 0
+                    docker rm nodejs-container || exit 0
+
+                    docker run -d --name nodejs-container -p 8000:8080 nodejs-app:latest
                 '''
+            }
+        }
+
+        stage('Test Application') {
+            steps {
+                bat 'docker ps'
             }
         }
     }
