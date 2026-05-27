@@ -1,0 +1,25 @@
+{
+  "name": "jenkins-nodejs-application",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":"node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shivkumarrathod/jenkins-nodejs-application.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Shivkumarrathod/jenkins-nodejs-application/issues"
+  },
+  "homepage": "https://github.com/Shivkumarrathod/jenkins-nodejs-application#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
