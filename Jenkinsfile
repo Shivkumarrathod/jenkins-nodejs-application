@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('clone repository'){
            steps {
-             sh '''
+             bat '''
                 mkdir -p devops
                 cd devops
                 rm -rf jenkins-nodejs-application
@@ -14,7 +14,7 @@ pipeline {
         }
         stage('build docker image') {
             steps {
-                sh '''
+                bat '''
                     cd devops/jenkins-nodejs-application
                     docker build -t nodejs-app:latest .
                 '''
@@ -22,7 +22,7 @@ pipeline {
         }
         stage('deploy'){
             steps {
-                sh '''
+                bat '''
                     docker run -d -p 8000:8080 nodejs-app
                 '''
             }
