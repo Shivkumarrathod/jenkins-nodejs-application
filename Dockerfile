@@ -7,6 +7,6 @@ RUN npm install -y
 
 COPY . .
 
-EXPOSE 8000
+EXPOSE 8080
 
 CMD [ "node", "app.js" ]

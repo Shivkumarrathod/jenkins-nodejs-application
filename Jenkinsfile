@@ -19,24 +19,13 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Deploy with Docker Compose') {
             steps {
                 bat '''
                     cd devops\\jenkins-nodejs-application
-                    docker build -t nodejs-app:latest .
-                    echo Docker image built successfully
-                '''
-            }
-        }
-
-        stage('Deploy Container') {
-            steps {
-                bat '''
-                    docker stop nodejs-container || exit 0
-                    docker rm nodejs-container || exit 0
-
-                    docker run -d --name nodejs-container -p 8000:8080 nodejs-app:latest
-                    echo Docker container deployed successfully
+                    docker-compose down || exit 0
+                    docker-compose up -d --build
+                    echo Docker Compose deployment completed successfully
                 '''
             }
         }
