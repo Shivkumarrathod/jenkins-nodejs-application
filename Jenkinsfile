@@ -1,10 +1,24 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'ubuntu:latest'
+            args '-u root'
+        }
+    }
 
     stages {
+        stage('install dependencies') {
+            steps {
+                sh '''
+                    apt update
+                    apt install -y git docker.io
+                '''
+            }
+        }
+
         stage('clone repository'){
            steps {
-             bat '''
+             sh '''
                 mkdir -p devops
                 cd devops
                 rm -rf jenkins-nodejs-application
@@ -14,7 +28,7 @@ pipeline {
         }
         stage('build docker image') {
             steps {
-                bat '''
+                sh '''
                     cd devops/jenkins-nodejs-application
                     docker build -t nodejs-app:latest .
                 '''
@@ -22,7 +36,7 @@ pipeline {
         }
         stage('deploy'){
             steps {
-                bat '''
+                sh '''
                     docker run -d -p 8000:8080 nodejs-app
                 '''
             }
