@@ -18,7 +18,7 @@ app.get("/search/:query", (req,res)=>{
     const query = req.params.query
     res.send(`You searched for: ${query}`)
 })
-
+////
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
 })
